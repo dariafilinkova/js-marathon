@@ -1,71 +1,97 @@
-const firstRow = 'мама мыла раму';
-const secondRow = 'собака друг человека';
-let choice =prompt('Как думаете, в какой строчке больше букв а .\n В 1-ой: мама мыла раму или во 2-ой: собака друг человека ?',1);
-alert(`Ваш выбор : ${choice}`);
-
-function getRow(firstRow, secondRow) {
-    let counter1 = 0;
-    let counter2 = 0;
-for (let i=0;i<firstRow.length;i++)
-{
-    
-    if (firstRow.charAt(i)==="а" || firstRow.charAt(i)==="a")
-    counter1 ++ ;
-
-}
-for (let i=0;i<secondRow.length;i++)
-{
-    
-    if (secondRow.charAt(i)==="а" || secondRow.charAt(i)==="a")
-    counter2 ++;
+const $btn1 = document.getElementById('btn-kick1');
+const $btn2 = document.getElementById('btn-kick2');
+const character = {
+    name: 'Pikachu',
+    defaultHP: 100,
+    damageHP: 100,
+    elHP: document.getElementById('health-character'),
+    elProgressbar: document.getElementById('progressbar-character'),
 }
 
-if (counter1 > counter2){
-    alert(`Правильный ответ : в 1-ой : ${firstRow}`);
-    return firstRow;
-
-}
-else {
-    alert(`Правильный ответ : во 2-ой : ${secondRow}`);
-    return secondRow;
-   
-}
+const enemy = {
+    name: 'Charmander',
+    defaultHP: 100,
+    damageHP: 100,
+    elHP: document.getElementById('health-enemy'),
+    elProgressbar: document.getElementById('progressbar-enemy'),
 }
 
-console.log(getRow(firstRow, secondRow));
+$btn1.addEventListener('click', function () {
+    console.log('Kick');
+    changeHP(random(20), character);
+    changeHP(random(20), enemy);
+})
 
-let yourLetter =prompt('Введите букву, которую хотите подсчитать в строках','я');
 
-function getRow_withUserLetter(firstRow, secondRow,yourLetter) {
-    let counter1 = 0;
-    let counter2 = 0;
-for (let i=0;i<firstRow.length;i++)
-{
-    if (firstRow.charAt(i)===yourLetter)
-        counter1 ++ ;
-}
-for (let i=0;i<secondRow.length;i++)
-{
-   if (secondRow.charAt(i)===yourLetter)
-       counter2 ++;   
+function compareTheNumbers(userNumber, randomNumber, attempt) {
+    if ((attempt == 2 || attempt == 3) && userNumber > randomNumber) alert('Перебор.Повторите попытку\n');
+
+    if ((attempt == 2 | attempt == 3) && userNumber < randomNumber) alert('Недобор.Повторите попытку\n');
+    if (attempt == 4 && (userNumber > randomNumber || userNumber < randomNumber)) { alert('Вы не угадали число ('); }
 }
 
-if(counter1===0 && counter2===0 ){
-     alert("Такой буквы нет ни в одной строчке");
-     return"Такой буквы нет ни в одной строчке" ;
+function guessTheNumber() {
+    let randomNumber = (random(10));
+    console.log(randomNumber);
+    let count = 0;
+    let attempt = 1;
+    while (count < 3) {
+
+        let userNumber = prompt(`Введите число от 1 до 10.\n Попытка № ${attempt} `, 1);
+        attempt++;
+        console.log(userNumber);
+        if (userNumber == randomNumber) { alert('Вы угадали число!\nВы нанесли супер удар!'); changeHP(random(20), enemy); break; }
+        else
+            compareTheNumbers(userNumber, randomNumber, attempt);
+        count++;
+    }
+
+
+
 }
-else if (counter1 > counter2){  
-    alert (firstRow);
-    return firstRow;
-} 
-else if (counter1 < counter2)
-{
-    alert (secondRow);
-    return secondRow;
+
+$btn2.addEventListener('click', function () {
+    console.log('Super hiiit');
+    alert('Чтобы воспользоваться супер ударом, угадайте число от 1 до 10');
+    guessTheNumber();
+    console.log('Super Hiiiit');
+})
+
+function init() {
+    console.log('Start Game');
+    renderHP(character);
+    renderHP(enemy);
 }
-else if(counter1===counter2){
-    alert("Количество заданной буквы одинаково в обоих строчках");
-    return "Количество заданной буквы одинаково в обоих строчках" ;
+
+function renderHP(person) {
+    renderHPLife(person);
+    renderProgressbarHP(person);
 }
+
+function renderHPLife(person) {
+    person.elHP.innerText = person.damageHP + ' / ' + person.defaultHP;
 }
-console.log(getRow_withUserLetter(firstRow, secondRow,yourLetter));
+
+function renderProgressbarHP(person) {
+    person.elProgressbar.style.width = person.damageHP + '%';
+}
+
+function changeHP(count, person) {
+    if (person.damageHP < count) {
+        person.damageHP = 0;
+        alert(' Бедный ' + person.name + ' проиграл бой ( ');
+        $btn1.disabled = true;
+        $btn2.disabled = true;
+    }
+    else {
+        person.damageHP -= count;
+    }
+    renderHP(person);
+
+}
+
+function random(num) {
+    return Math.ceil(Math.random() * num);
+}
+
+init();
