@@ -1,33 +1,51 @@
-const $btn1 = document.getElementById('btn-kick1');
-const $btn2 = document.getElementById('btn-kick2');
+const $btn1 = $getElById('btn-kick1');
+const $btn2 = $getElById('btn-kick2');
+function $getElById(id) {
+    return document.getElementById(id);
+}
 const character = {
     name: 'Pikachu',
     defaultHP: 100,
     damageHP: 100,
-    elHP: document.getElementById('health-character'),
-    elProgressbar: document.getElementById('progressbar-character'),
+    elHP: $getElById('health-character'),
+    elProgressbar: $getElById('progressbar-character'),
+    changeHP,
+    renderHP,
+    renderHPLife,
+    renderProgressbarHP,
 }
+
 
 const enemy = {
     name: 'Charmander',
     defaultHP: 100,
     damageHP: 100,
-    elHP: document.getElementById('health-enemy'),
-    elProgressbar: document.getElementById('progressbar-enemy'),
+    elHP: $getElById('health-enemy'),
+    elProgressbar: $getElById('progressbar-enemy'),
+    changeHP,
+    renderHP,
+    renderHPLife,
+    renderProgressbarHP,
 }
 
 $btn1.addEventListener('click', function () {
     console.log('Kick');
-    changeHP(random(20), character);
-    changeHP(random(20), enemy);
+    character.changeHP(random(20));
+    enemy.changeHP(random(20));
 })
 
 
 function compareTheNumbers(userNumber, randomNumber, attempt) {
-    if ((attempt == 2 || attempt == 3) && userNumber > randomNumber) alert('Перебор.Повторите попытку\n');
+    if ((attempt == 2 || attempt == 3) && userNumber > randomNumber) {
+        alert('Перебор.Повторите попытку\n');
+    }
 
-    if ((attempt == 2 | attempt == 3) && userNumber < randomNumber) alert('Недобор.Повторите попытку\n');
-    if (attempt == 4 && (userNumber > randomNumber || userNumber < randomNumber)) { alert('Вы не угадали число ('); }
+    if ((attempt == 2 | attempt == 3) && userNumber < randomNumber) {
+        alert('Недобор.Повторите попытку\n');
+    }
+    if (attempt == 4 && (userNumber > randomNumber || userNumber < randomNumber)) {
+        alert('Вы не угадали число (');
+    }
 }
 
 function guessTheNumber() {
@@ -40,7 +58,11 @@ function guessTheNumber() {
         let userNumber = prompt(`Введите число от 1 до 10.\n Попытка № ${attempt} `, 1);
         attempt++;
         console.log(userNumber);
-        if (userNumber == randomNumber) { alert('Вы угадали число!\nВы нанесли супер удар!'); changeHP(random(20), enemy); break; }
+        if (userNumber == randomNumber) {
+            alert('Вы угадали число!\nВы нанесли супер удар!');
+            enemy.changeHP(random(20));
+            break;
+        }
         else
             compareTheNumbers(userNumber, randomNumber, attempt);
         count++;
@@ -59,34 +81,32 @@ $btn2.addEventListener('click', function () {
 
 function init() {
     console.log('Start Game');
-    renderHP(character);
-    renderHP(enemy);
 }
 
-function renderHP(person) {
-    renderHPLife(person);
-    renderProgressbarHP(person);
+function renderHP() {
+
+    this.renderHPLife();
+    this.renderProgressbarHP();
 }
 
-function renderHPLife(person) {
-    person.elHP.innerText = person.damageHP + ' / ' + person.defaultHP;
+function renderHPLife() {
+    this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
 }
 
-function renderProgressbarHP(person) {
-    person.elProgressbar.style.width = person.damageHP + '%';
+function renderProgressbarHP() {
+    this.elProgressbar.style.width = this.damageHP + '%';
 }
 
-function changeHP(count, person) {
-    if (person.damageHP < count) {
-        person.damageHP = 0;
-        alert(' Бедный ' + person.name + ' проиграл бой ( ');
+function changeHP(count) {
+    this.damageHP -= count;
+    if (this.damageHP <= 0) {
+        this.damageHP = 0;
+        alert(' Бедный ' + this.name + ' проиграл бой ( ');
         $btn1.disabled = true;
         $btn2.disabled = true;
     }
-    else {
-        person.damageHP -= count;
-    }
-    renderHP(person);
+
+    this.renderHP();
 
 }
 
