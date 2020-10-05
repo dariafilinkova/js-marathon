@@ -42,6 +42,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 
@@ -266,7 +267,7 @@ body {
     animation: bounce 0.8s ease infinite;
 }
 
-.button1 {
+.button {
     position: relative;
     background: white;
     border: 2px solid #ffc55b;
@@ -277,9 +278,9 @@ body {
     outline: none !important;
     cursor: pointer;
     font-size: 18px;
-
+    margin-bottom: 17px;
 }
-.button1:after {
+.button:after {
     content: "";
     position: absolute;
     left: -5px;
@@ -291,29 +292,30 @@ body {
     z-index: -1;
     box-shadow: 0 3px 5px -2px rgba(0, 0, 0, 0.2);
 }
-.button1:hover {
+.button:hover {
     background: -webkit-gradient(linear, left top, left bottom, from(#ffd78e), to(#ffc55b));
     background: linear-gradient(to bottom, #ffd78e, #ffc55b);
     border-color: white;
 }
-.button1:hover:after {
+.button:hover:after {
     background: -webkit-gradient(linear, left top, left bottom, from(#ffd78e), to(#ffc55b));
     background: linear-gradient(to bottom, #ffd78e, #ffc55b);
     box-shadow: 0 0 5px 2px white, 0 0 15px #ffe9c1, 0 3px 5px -2px rgba(0, 0, 0, 0.2);
 }
 
-.button2 {
+/*.button2 {
+    
     position: relative;
     background: white;
     border: 2px solid #ffc55b;
     border-radius: 10px;
     min-height: 30px;
     vertical-align: middle;
-    padding: 12px 20px;
+    padding: 15px 20px;
     outline: none !important;
     cursor: pointer;
     font-size: 18px;
-    margin-left: 15%;
+    
 
 }
 .button2:after {
@@ -337,7 +339,7 @@ body {
     background: -webkit-gradient(linear, left top, left bottom, from(#ffd78e), to(#ffc55b));
     background: linear-gradient(to bottom, #ffd78e, #ffc55b);
     box-shadow: 0 0 5px 2px white, 0 0 15px #ffe9c1, 0 3px 5px -2px rgba(0, 0, 0, 0.2);
-}
+}*/
 
 .candy {
     display: block;
@@ -510,3 +512,15 @@ h1 {
 .action label {
     padding: 6px 0;
 }
+
+#logs {
+    margin: 10px auto;
+    width: 80%;
+    height: 150px;
+    overflow: scroll;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 10px;
+    color: rgb(214, 203, 214);
+    background-color: rgb(92, 6, 87);
+  }

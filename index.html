@@ -28,20 +28,31 @@
                         <div class="bar">
                             <div class="health" id="progressbar-character" style="width: 100%;"></div>
                         </div>
-                        <span class="text" id="health-character">100 / 100</span>
+                        <span class="text" id="health-character">200 / 200</span>
                     </div>
                 </div>
             </div>
 
             <div class="control">
-                <button class="button1" id="btn-kick1">
+                <button class="button" id="btn-kick1">
                     Thunder Jolt
+                    <br>
+                    <small style="color:darkorchid;">There are <span>NumberOfApplications</span> applications</small>
+
                 </button>
-                <button class="button2" id="btn-kick2">
+
+                <button class="button" id="btn-kick2">
                     Super Hit
+                    <br>
+                    <small style="color:darkorchid;">There are <span>NumberOfApplications</span> applications</small>
+                </button>
+                <button class="button" id="btn-kick3">
+                    Elbow Blow
+                    <br>
+                    <small style="color:darkorchid;">There are <span>NumberOfApplications</span> applications</small>
                 </button>
             </div>
-            <div id="logs"></div>
+
 
 
 
@@ -59,12 +70,14 @@
                         <div class="bar">
                             <div class="health" id="progressbar-enemy" style="width: 100%;"></div>
                         </div>
-                        <span class="text" id="health-enemy">100 / 100</span>
+                        <span class="text" id="health-enemy">200 / 200</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="log" id="logs"></div>
+
     <div class="catch_screen"></div>
 
     <script src="main.js"></script>
