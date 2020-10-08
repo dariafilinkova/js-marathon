@@ -1,28 +1,44 @@
-import Pokemon from "./pokemon.js";
+/*import Pokemon from "./pokemon.js";
 import random from "./utils.js";
+import { pokemons } from './pokemons.js'
+const pikachu = pokemons.find(item => item.name === 'Pickachu');
+console.log(pikachu);
 const player1 = new Pokemon({
-    name: "Pikachu",
-    type: "electric",
-    hp: 200,
-    selectors: "character",
+    ...pikachu,
+    selectors: "player1",
 });
 
 const player2 = new Pokemon({
     name: "Charmander",
     type: "fire",
     hp: 200,
-    selectors: "enemy",
+    selectors: "player2",
 });
 function $getElById(id) {
     return document.getElementById(id);
 }
 
-const $btn1 = $getElById('btn-thunder-jolt');
+const $control = document.querySelector('.control');
+
+player1.attacks.forEach(item => {
+    console.log(item);
+    const $btn = document.createElement('button');
+    $btn.classList.add('button');
+    $btn.innerText = item.name;
+    const btnCount=countBtn(item.maxCount,$btn);
+    $control.appendChild($btn);
+    $btn.addEventListener('click', () => {
+        console.log('Click button', $btn1, innerText);
+        btnCount();
+    })
+})
+
+/*const $btn1 = $getElById('btn-thunder-jolt');
 const $btn2 = $getElById('btn-super-hit');
-const $btn3 = $getElById('btn-elbow-blow');
+const $btn3 = $getElById('btn-elbow-blow');*/
 
 
-function countButton(count = 6, el) {
+/*function countButton(count = 6, el) {
     const innerText = el.innerText;
     el.innerText = `${innerText} (${count})`;
     return function () {
@@ -36,7 +52,7 @@ function countButton(count = 6, el) {
 
     }
 }
-const btnCountJolt = countButton(10, $btn1);
+/*const btnCountJolt = countButton(25, $btn1);
 $btn1.addEventListener('click', function () {
     console.log('Kick');
     btnCountJolt();
@@ -62,7 +78,7 @@ $btn3.addEventListener('click', function () {
     btnCountElbow();
     //enemy.changeHP(random(12));
     player2.changeHP(random(12));
-})
+})*/
 
 
 /*function changeHP(count) {
@@ -92,8 +108,9 @@ $btn3.addEventListener('click', function () {
 }*/
 
 
-function generateLog(firstPerson, secondPerson, count) {
-    const { name, hp: { current, total }, elLog } = firstPerson;
+/*function generateLog(firstPerson, secondPerson, count) {
+    count *= (-1);
+    const { name, hp: { current, total } } = firstPerson;
     const { name: nameOfEnemy } = secondPerson;
     const logs = [
         `${name} вспомнил что-то важное, но неожиданно ${nameOfEnemy}, не помня себя от испуга, ударил в предплечье врага. ${count},[${current} / ${total}] `,
@@ -107,8 +124,25 @@ function generateLog(firstPerson, secondPerson, count) {
         `${name} расстроился, как вдруг, неожиданно ${nameOfEnemy} случайно влепил стопой в живот соперника. ${count},[${current} / ${total}]`,
         `${name} пытался что-то сказать, но вдруг, неожиданно ${nameOfEnemy} со скуки, разбил бровь сопернику. ${count},[${current} / ${total}]`
     ];
+    //const log = logs[random(logs.length) - 1];
+    //const $p = document.createElement('p');
+    //$p.innerHTML = log;
+    //elLog.insertBefore($p, elLog.children[0]);
+    const $paragraph = document.createElement('p');
+    $paragraph.innerText = logs;
+    const $logs = document.querySelector('#logs');
+    $logs.insertBefore($paragraph, $logs.children[0])
     return logs[random(logs.length) - 1];
 }
+
+*/
+
+import Game from './game.js';
+
+const game = new Game;
+game.begin();
+
+export default game;
 
 init();
 function init() {
