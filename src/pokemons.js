@@ -1,4 +1,4 @@
-export const pokemons = [
+/*export const pokemons = [
     {
         name: 'Pikachu',
         type: 'electric',
@@ -192,4 +192,4 @@ export const pokemons = [
         ]
     }
 ];
-export default pokemons;
+export default pokemons;*/

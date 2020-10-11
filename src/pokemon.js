@@ -1,4 +1,4 @@
-import { random, generateLog } from './utils.js';
+import { generateLog } from './utils.js';
 import game from './main.js';
 class Selectors {
   constructor(name) {
@@ -13,7 +13,7 @@ class Selectors {
 }
 
 class Pokemon extends Selectors {
-  constructor({ name, hp, type, selectors, attacks = [], img }) {
+  constructor({ name, hp, type, selectors, attacks = [], img, id }) {
     super(selectors);
 
     this.name = name;
@@ -26,6 +26,7 @@ class Pokemon extends Selectors {
     this.selectors = selectors;
     this.elImg.src = img;
     this.elName.textContent = name;
+    this.id = id;
     this.renderHP();
   }
 
@@ -58,11 +59,12 @@ class Pokemon extends Selectors {
     cb && cb(count, isDisabled);
   };*/
 
-  bump = (adversary, btn) => {
+  bump = (adversary, damage) => {
     const { hp, renderHp } = adversary;
-    const { maxDamage, minDamage } = btn;
-    const count = random(maxDamage, minDamage);
-    hp.current -= count;
+    //const { maxDamage, minDamage } = btn;
+    //const count = random(maxDamage, minDamage);
+    //hp.current -= count;
+    hp.current -= damage;
 
     if (hp.current <= 0) {
       hp.current = 0;
@@ -72,19 +74,22 @@ class Pokemon extends Selectors {
         newLvl++;
         this.lvl.textContent = 'Lv. ' + newLvl;
         renderHp();
-        generateLog(this, adversary, count);
+        //generateLog(this, adversary, count);
+        generateLog(this, adversary, damage);
+
         return true;
       }
       else {
         game.gameOver();
         renderHp();
-        generateLog(this, adversary, count);
+        //generateLog(this, adversary, count);
+        generateLog(this, adversary, damage);
         return false;
       }
     }
 
     //renderHp();//тут что-то не так,фун-ция не вызвается
-    generateLog(this, adversary, count);
+    generateLog(this, adversary, damage);
   };
 }
 
