@@ -1,6 +1,6 @@
 import Pokemon from './pokemon.js';
-import { pokemons } from './pokemons.js';
-import { random, countBtn } from './utils.js';
+//import { pokemons } from './pokemons.js';
+import { countBtn } from './utils.js';
 
 class Selectors {
     constructor() {
@@ -15,9 +15,29 @@ class Game extends Selectors {
 
     };
 
-    begin = () => {
+    getPokemons = async (query = '') => {
+        const responce = await fetch(`https://reactmarathon-api.netlify.app/api/pokemons${query}`);
+        const body = responce.json();
+        return body;
+    }
+
+    getDamage = async (player1, player2, hit) => {
+        const responce = await fetch(`https://reactmarathon-api.netlify.app/api/fight?player1id=${player1}&attackId=${hit}&player2id=${player2}`);
+        const body = responce.json();
+        return body;
+    }
+
+    createPlayer = (who, select) => {
+        return new Pokemon({
+            ...who,
+            selectors: select,
+        })
+    };
+
+    begin = async () => {
         this.playground.textContent = '';
         this.logDiv.textContent = '';
+        const pokemons = await this.getPokemons();
         pokemons.forEach(item => {
             const { name, img } = item;
             const card = document.createElement('div');
@@ -35,10 +55,12 @@ class Game extends Selectors {
 
     };
 
-    start = (name) => {
+    start = async (name) => {
         this.playground.textContent = '';
-        let player__1 = pokemons.find(item => item.name === name);
-        let player__2 = pokemons[random(pokemons.length - 1)];
+        //let player__1 = pokemons.find(item => item.name === name);
+        //let player__2 = pokemons[random(pokemons.length - 1)];
+        const player__1 = await this.getPokemons(`?name=${name}`);
+        const player__2 = await this.getPokemons('?random=true');
 
         this.playground.appendChild(this.card('player1'));
         this.playground.appendChild(this.card('control'));
@@ -47,19 +69,20 @@ class Game extends Selectors {
 
         this.player1 = this.createPlayer(player__1, 'player1');
         this.player2 = this.createPlayer(player__2, 'player2');
+        console.log(this.player1.attacks[0]);
+        document.querySelectorAll('.pokemon').forEach(item => { item.style.width = '180px'; });
 
         this.attacks();
     };
 
-    gameOver = () => {
-        const allButtons = document.querySelectorAll('.control .button');
-        allButtons.forEach(item => item.remove());
-        const newBtn = document.createElement('div');
-        newBtn.className = 'button';
-        newBtn.innerHTML = `Игра оконченна<br>Нажмите,чтобы сыграть заново`;
-        this.control.appendChild(newBtn);
-        newBtn.addEventListener('click', this.begin);
-    };
+
+
+    bump = async (btn) => {
+        const damage = await this.getDamage(this.player1.id, this.player2.id, btn.id);
+        console.log(damage);
+        !this.player1.bump(this.player2, damage.kick.player2) &&
+            this.player2.bump(this.player1, damage.kick.player1);
+    }
 
     card = (player) => {
         const card = document.createElement('div');
@@ -102,16 +125,23 @@ class Game extends Selectors {
         });
     };
 
-    changeAdversary = () => {
-        let player__2 = pokemons[random(pokemons.length - 1)];
+    changeAdversary = async () => {
+        //let player__2 = pokemons[random(pokemons.length - 1)];
+        //this.player2 = this.createPlayer(player__2, 'player2');
+        const player__2 = await this.getPokemons('?random=true');
         this.player2 = this.createPlayer(player__2, 'player2');
     };
 
-    createPlayer = (who, select) => {
-        return new Pokemon({
-            ...who,
-            selectors: select,
-        })
+
+
+    gameOver = () => {
+        const allButtons = document.querySelectorAll('.control .button');
+        allButtons.forEach(item => item.remove());
+        const newBtn = document.createElement('div');
+        newBtn.className = 'button';
+        newBtn.innerHTML = `Игра оконченна<br>Нажмите,чтобы сыграть заново`;
+        this.control.appendChild(newBtn);
+        newBtn.addEventListener('click', this.begin);
     };
 
 
